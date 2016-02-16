@@ -3,6 +3,9 @@ var GameLayer = cc.LayerColor.extend({
         console.log('Initialized');
         this._super(new cc.Color(127, 127, 127, 255));
         this.setPosition(new cc.Point(0, 0));
+        var ship = new Ship();
+        ship.setPosition(new cc.Point(200, 200));
+        this.addChild(ship);
         return true;
     }
 });
