@@ -10,7 +10,28 @@ var GameLayer = cc.LayerColor.extend({
         console.log('Add ship to super class');
         ship.scheduleUpdate();
 
+        this.addKeyboardHandlers();
+        console.log("use keyboardhandlers");
+
         return true;
+    },
+    addKeyboardHandlers: function () {
+        var self = this;
+        cc.eventManager.addListener({
+            event: cc.EventListener.KEYBOARD,
+            onKeyPressed: function (keyCode, event) {
+                self.onKeyDown(keyCode, event);
+            },
+            onKeyReleased: function (keyCode, event) {
+                self.onKeyUp(keyCode, event);
+            }
+        }, this);
+    },
+    onKeyDown: function (keyCode, event) {
+        console.log('Down: ' + keyCode.toString());
+    },
+    onKeyUp: function (keyCode, event) {
+        console.log('Up: ' + keyCode.toString());
     }
 });
 
@@ -22,4 +43,6 @@ var StartScene = cc.Scene.extend({
         this.addChild(layer);
         console.log('GameLayer created');
     }
-})
+});
+
+
