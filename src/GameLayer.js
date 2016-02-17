@@ -19,6 +19,7 @@ var GameLayer = cc.LayerColor.extend({
 
         this.addKeyboardHandlers();
 
+        this.scheduleUpdate();
         return true;
     },
 
@@ -35,6 +36,12 @@ var GameLayer = cc.LayerColor.extend({
     onKeyDown: function (keyCode, event) {
         if (keyCode == cc.KEY.space) {
             this.ship.switchDirection();
+        }
+    },
+
+    update: function () {
+        if (this.gold.closeTo(this.ship)) {
+            this.gold.randomPosition();
         }
     }
 });
