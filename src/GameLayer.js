@@ -39,9 +39,7 @@ var GameLayer = cc.LayerColor.extend({
     },
 
     onKeyDown: function (keyCode, event) {
-        if (keyCode == cc.KEY.space) {
-            this.ship.switchDirection();
-        }
+        this.ship.switchDirection(keyCode);
     },
 
     update: function () {
