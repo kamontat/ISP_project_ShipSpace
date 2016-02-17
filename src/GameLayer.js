@@ -17,6 +17,11 @@ var GameLayer = cc.LayerColor.extend({
         this.addChild(this.gold);
         this.gold.randomPosition();
 
+        // label with score
+        this.scoreLabel = cc.LabelTTF.create('0', 'Arial', 40);
+        this.scoreLabel.setPosition(new cc.Point(750, 550));
+        this.addChild(this.scoreLabel);
+
         this.addKeyboardHandlers();
 
         this.scheduleUpdate();
@@ -41,6 +46,10 @@ var GameLayer = cc.LayerColor.extend({
 
     update: function () {
         if (this.gold.closeTo(this.ship)) {
+            // increase speed
+            this.ship.updateSpeed();
+            // change score
+            this.scoreLabel.setString(parseInt(this.scoreLabel.getString()) + 1);
             this.gold.randomPosition();
         }
     }
