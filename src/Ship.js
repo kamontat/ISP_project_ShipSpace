@@ -28,6 +28,7 @@ var Ship = cc.Sprite.extend({
 
     switchDirection: function () {
         console.log("Switch Finish");
+        this.setAnchorPoint(0.5, 0.5);
         if (this.direction == Ship.DIR.UP) {
             this.direction = Ship.DIR.RIGHT;
             this.setRotation(90);

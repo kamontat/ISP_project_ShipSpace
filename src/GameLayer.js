@@ -12,6 +12,11 @@ var GameLayer = cc.LayerColor.extend({
         this.addChild(this.ship);
         this.ship.scheduleUpdate();
 
+        // create Gold object
+        this.gold = new Gold();
+        this.addChild(this.gold);
+        this.gold.randomPosition();
+
         this.addKeyboardHandlers();
 
         return true;
