@@ -2,7 +2,9 @@ var GameLayer = cc.LayerColor.extend({
 
 
     init: function () {
-        console.log('Initialized');
+        this.timeNow = new Date();
+        this.timeLimit = 100;
+
         this._super(new cc.Color(127, 127, 127, 255));
         this.setPosition(new cc.Point(0, 0));
 
@@ -22,6 +24,10 @@ var GameLayer = cc.LayerColor.extend({
         this.scoreLabel.setPosition(new cc.Point(750, 550));
         this.addChild(this.scoreLabel);
 
+        // time label
+        this.timeLabel = cc.LabelTTF.create(this.timeLimit, 'Arial', 40);
+        this.timeLabel.setPosition(new cc.Point(50, 550));
+        this.addChild(this.timeLabel);
         this.addKeyboardHandlers();
 
         this.scheduleUpdate();
@@ -50,6 +56,21 @@ var GameLayer = cc.LayerColor.extend({
             this.scoreLabel.setString(parseInt(this.scoreLabel.getString()) + 1);
             this.gold.randomPosition();
         }
+        this.updateTime();
+    },
+
+    disappearGold: function () {
+
+    },
+
+    updateTime: function () {
+
+        if (Date.parse(new Date()) - Date.parse(this.timeNow) == 1000) {
+            this.timeNow = new Date();
+            this.timeLimit -= 1;
+        }
+
+        this.timeLabel.setString(this.timeLimit);
     }
 });
 

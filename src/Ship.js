@@ -52,7 +52,7 @@ var Ship = cc.Sprite.extend({
     },
 
     updateSpeed: function () {
-        this.speed += 0.5;
+        this.speed += 0.3;
     }
 });
 
