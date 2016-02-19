@@ -1,9 +1,14 @@
+/** version 1.5 */
+
 var GameLayer = cc.LayerColor.extend({
 
 
     init: function () {
         this.timeNow = new Date();
-        this.timeLimit = 100;
+        // game time
+        this.timeLimit = 10;
+        // count time limit of Gold object
+        this.timeGold = 4;
 
         this._super(new cc.Color(127, 127, 127, 255));
         this.setPosition(new cc.Point(0, 0));
@@ -12,7 +17,6 @@ var GameLayer = cc.LayerColor.extend({
         this.ship = new Ship();
         this.ship.setPosition(new cc.Point(300, 220));
         this.addChild(this.ship);
-        this.ship.scheduleUpdate();
 
         // create Gold object
         this.gold = new Gold();
@@ -31,6 +35,8 @@ var GameLayer = cc.LayerColor.extend({
         this.addKeyboardHandlers();
 
         this.scheduleUpdate();
+        this.ship.scheduleUpdate();
+
         return true;
     },
 
@@ -49,14 +55,23 @@ var GameLayer = cc.LayerColor.extend({
     },
 
     update: function () {
+        // if timeup game will stop
+        if (this.timeLimit <= 0) {
+            console.warn("Game Stop");
+            this.unscheduleUpdate();
+            this.ship.unscheduleUpdate();
+        }
+
         if (this.gold.closeTo(this.ship)) {
             // increase speed
             this.ship.updateSpeed();
             // change score
             this.scoreLabel.setString(parseInt(this.scoreLabel.getString()) + 1);
             this.gold.randomPosition();
+            this.timeGold = 5;
         }
         this.updateTime();
+
     },
 
     disappearGold: function () {
@@ -64,11 +79,19 @@ var GameLayer = cc.LayerColor.extend({
     },
 
     updateTime: function () {
-
+        // time limit of Gold Object
+        if (this.timeGold == 0) {
+            console.log("Time Up, random again");
+            this.gold.randomPosition();
+            this.timeGold = 4;
+        }
+        // count time limit
         if (Date.parse(new Date()) - Date.parse(this.timeNow) == 1000) {
             this.timeNow = new Date();
             this.timeLimit -= 1;
+            this.timeGold--;
         }
+
 
         this.timeLabel.setString(this.timeLimit);
     }

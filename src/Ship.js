@@ -8,7 +8,6 @@ var Ship = cc.Sprite.extend({
 
     update: function () {
         var pos = this.getPosition();
-
         if (this.direction == Ship.DIR.LEFT) {
             if (pos.x > 0) {
                 this.setPosition(new cc.Point(pos.x - this.speed, pos.y));
