@@ -1,5 +1,12 @@
 /** version 2.3 */
 
+/*****************************************
+text show status
+object to decrease point
+color of ship
+message that important
+*****************************************/
+
 // index 0 is ship 1
 // index 1 is ship 2
 var globleScore = [0, 0];
@@ -19,12 +26,12 @@ var GameLayer = cc.LayerColor.extend({
 
         // create Ship1 object
         this.ship1 = new Ship1();
-        this.ship1.setPosition(new cc.Point(100, 100));
+        this.ship1.setPosition(new cc.Point(150, 150));
         this.addChild(this.ship1);
 
         // create Ship2 object
         this.ship2 = new Ship2();
-        this.ship2.setPosition(new cc.Point(700, 500));
+        this.ship2.setPosition(new cc.Point(screenWidth - 150, screenHeight - 150));
         this.addChild(this.ship2);
 
         // create Gold object
@@ -34,12 +41,12 @@ var GameLayer = cc.LayerColor.extend({
 
         // label with All score
         this.scoreLabel = cc.LabelTTF.create(this.score[0] + " - " + this.score[1], 'Arial', 40);
-        this.scoreLabel.setPosition(new cc.Point(400, 550));
+        this.scoreLabel.setPosition(new cc.Point(screenWidth / 2, screenHeight - 50));
         this.addChild(this.scoreLabel);
 
         // time label
         this.timeLabel = cc.LabelTTF.create(this.timeLimit, 'Arial', 40);
-        this.timeLabel.setPosition(new cc.Point(50, 550));
+        this.timeLabel.setPosition(new cc.Point(50, screenHeight - 50));
         this.addChild(this.timeLabel);
         this.addKeyboardHandlers();
 
