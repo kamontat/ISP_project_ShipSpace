@@ -1,19 +1,20 @@
-/** version 2.2 */
+/** version 2.3 */
 
 // index 0 is ship 1
 // index 1 is ship 2
-var score = [0, 0];
+var globleScore = [0, 0];
+var globleTurn = 0;
 
 var GameLayer = cc.LayerColor.extend({
-
     init: function () {
         this.timeNow = new Date();
         // game time
-        this.timeLimit = 40;
+        this.timeLimit = 20;
         // count time limit of Gold object
         this.timeGold = 4;
+        this.score = [0, 0];
 
-        this._super(new cc.Color(127, 127, 127, 255));
+        this._super(new cc.Color(39, 48, 72, 255));
         this.setPosition(new cc.Point(0, 0));
 
         // create Ship1 object
@@ -32,7 +33,7 @@ var GameLayer = cc.LayerColor.extend({
         this.gold.randomPosition();
 
         // label with All score
-        this.scoreLabel = cc.LabelTTF.create(score[0] + " - " + score[1], 'Arial', 40);
+        this.scoreLabel = cc.LabelTTF.create(this.score[0] + " - " + this.score[1], 'Arial', 40);
         this.scoreLabel.setPosition(new cc.Point(400, 550));
         this.addChild(this.scoreLabel);
 
@@ -55,6 +56,7 @@ var GameLayer = cc.LayerColor.extend({
             event: cc.EventListener.KEYBOARD,
             onKeyPressed: function (keyCode, event) {
                 self.onKeyDown(keyCode, event);
+
             }
         }, this);
     },
@@ -63,19 +65,20 @@ var GameLayer = cc.LayerColor.extend({
         if (this.timeLimit > 0) {
             this.ship1.switchDirection(keyCode);
             this.ship2.switchDirection(keyCode);
+        } else {
+            this.restartGame(keyCode);
         }
     },
 
     update: function () {
         // when score Equals add more 25 second
-        if (score[0] == score[1] && this.timeLimit == 0) {
+        if (this.score[0] == this.score[1] && this.timeLimit == 0) {
             this.timeLimit = 25;
 
-            console.warn("Timeup BUT score equals and my time is " + this.timeLimit);
+            console.warn("Timeup BUT score equals is " + this.score[0]);
         }
         // if timeup game will stop
         if (this.timeLimit <= 0) {
-            console.warn("Game Stop");
             this.unscheduleUpdate();
             this.ship1.unscheduleUpdate();
             this.ship2.unscheduleUpdate();
@@ -86,7 +89,7 @@ var GameLayer = cc.LayerColor.extend({
             // increase speed
             this.ship1.updateSpeed();
             // change score
-            this.scoreLabel.setString((++score[0]) + " - " + score[1]);
+            this.scoreLabel.setString((++this.score[0]) + " - " + this.score[1]);
             this.gold.randomPosition();
             this.timeGold = 5;
         }
@@ -95,18 +98,23 @@ var GameLayer = cc.LayerColor.extend({
             // increase speed
             this.ship2.updateSpeed();
             // change score
-            this.scoreLabel.setString(score[0] + " - " + (++score[1]));
+            this.scoreLabel.setString(this.score[0] + " - " + (++this.score[1]));
             this.gold.randomPosition();
             this.timeGold = 5;
         }
 
         this.updateTime();
-        // restart Game
-
     },
 
-    disappearGold: function () {
-
+    restartGame: function (key) {
+        if (key == 32) {
+            console.log("SpaceBar been press, RESTART GAME. . .");
+            globleScore[0] += this.score[0];
+            globleScore[1] += this.score[1];
+            globleTurn++;
+            console.info(globleTurn + " turn(s) :: SCORE NOW: " + globleScore[0] + " - " + globleScore[1]);
+            cc.director.runScene(new StartScene());
+        }
     },
 
     updateTime: function () {

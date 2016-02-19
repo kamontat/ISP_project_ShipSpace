@@ -6,7 +6,7 @@ var Ship1 = cc.Sprite.extend({
         this.direction = Ship1.DIR.UP;
         this.setRotation(0);
         // set init speed 
-        this.speed = 3;
+        this.speed = 20;
     },
 
     update: function () {
@@ -57,7 +57,7 @@ var Ship1 = cc.Sprite.extend({
     },
 
     updateSpeed: function () {
-        this.speed += 0.3;
+        this.speed -= 0.2;
     }
 });
 
@@ -69,7 +69,7 @@ var Ship2 = cc.Sprite.extend({
         this.direction = Ship2.DIR.S;
         this.setRotation(180);
         // set init speed 
-        this.speed = 3;
+        this.speed = 20;
     },
 
     update: function () {
@@ -120,7 +120,7 @@ var Ship2 = cc.Sprite.extend({
     },
 
     updateSpeed: function () {
-        this.speed += 0.3;
+        this.speed -= 0.2;
     }
 });
 
