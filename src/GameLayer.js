@@ -1,4 +1,4 @@
-/** version 2.1 */
+/** version 2.2 */
 
 // index 0 is ship 1
 // index 1 is ship 2
@@ -67,6 +67,12 @@ var GameLayer = cc.LayerColor.extend({
     },
 
     update: function () {
+        // when score Equals add more 25 second
+        if (score[0] == score[1] && this.timeLimit == 0) {
+            this.timeLimit = 25;
+
+            console.warn("Timeup BUT score equals and my time is " + this.timeLimit);
+        }
         // if timeup game will stop
         if (this.timeLimit <= 0) {
             console.warn("Game Stop");
@@ -74,6 +80,7 @@ var GameLayer = cc.LayerColor.extend({
             this.ship1.unscheduleUpdate();
             this.ship2.unscheduleUpdate();
         }
+
         // for ship 1
         if (this.gold.closeTo(this.ship1)) {
             // increase speed
@@ -83,7 +90,6 @@ var GameLayer = cc.LayerColor.extend({
             this.gold.randomPosition();
             this.timeGold = 5;
         }
-
         // for ship 2
         if (this.gold.closeTo(this.ship2)) {
             // increase speed
@@ -93,9 +99,10 @@ var GameLayer = cc.LayerColor.extend({
             this.gold.randomPosition();
             this.timeGold = 5;
         }
-        this.updateTime();
 
+        this.updateTime();
         // restart Game
+
     },
 
     disappearGold: function () {
@@ -105,7 +112,6 @@ var GameLayer = cc.LayerColor.extend({
     updateTime: function () {
         // time limit of Gold Object
         if (this.timeGold == 0) {
-            console.log("Time Up, random again");
             this.gold.randomPosition();
             this.timeGold = 4;
         }
@@ -115,7 +121,6 @@ var GameLayer = cc.LayerColor.extend({
             this.timeLimit -= 1;
             this.timeGold--;
         }
-
 
         this.timeLabel.setString(this.timeLimit);
     }
