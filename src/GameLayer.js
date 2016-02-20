@@ -1,16 +1,21 @@
-/** version 2.3 */
+/** version 2.6 */
 
 /*****************************************
-text show status
+can enter name
 object to decrease point
-color of ship
-message that important
+message that important (popup)
+pause game by press "p" button
 *****************************************/
 
 // index 0 is ship 1
 // index 1 is ship 2
 var globleScore = [0, 0];
 var globleTurn = 0;
+
+var stdMessage = {
+    FIRSTWIN: "P1 WIN!",
+    SECONDWIN: "P2 WIN!"
+}
 
 var GameLayer = cc.LayerColor.extend({
     init: function () {
@@ -39,16 +44,21 @@ var GameLayer = cc.LayerColor.extend({
         this.addChild(this.gold);
         this.gold.randomPosition();
 
-        // label with All score
-        this.scoreLabel = cc.LabelTTF.create(this.score[0] + " - " + this.score[1], 'Arial', 40);
-        this.scoreLabel.setPosition(new cc.Point(screenWidth / 2, screenHeight - 50));
-        this.addChild(this.scoreLabel);
-
         // time label
         this.timeLabel = cc.LabelTTF.create(this.timeLimit, 'Arial', 40);
         this.timeLabel.setPosition(new cc.Point(50, screenHeight - 50));
         this.addChild(this.timeLabel);
         this.addKeyboardHandlers();
+
+        // label with All score
+        this.scoreLabel = cc.LabelTTF.create(this.score[0] + " - " + this.score[1], 'Arial', 40);
+        this.scoreLabel.setPosition(new cc.Point(screenWidth / 2, screenHeight - 50));
+        this.addChild(this.scoreLabel);
+
+        // label with message
+        this.messageLabel = cc.LabelTTF.create("", 'Arial', 40);
+        this.messageLabel.setPosition(new cc.Point(screenWidth - 100, screenHeight - 50));
+        this.addChild(this.messageLabel);
 
         this.scheduleUpdate();
         this.ship1.scheduleUpdate();
@@ -81,7 +91,6 @@ var GameLayer = cc.LayerColor.extend({
         // when score Equals add more 25 second
         if (this.score[0] == this.score[1] && this.timeLimit == 0) {
             this.timeLimit = 25;
-
             console.warn("Timeup BUT score equals is " + this.score[0]);
         }
         // if timeup game will stop
@@ -89,6 +98,13 @@ var GameLayer = cc.LayerColor.extend({
             this.unscheduleUpdate();
             this.ship1.unscheduleUpdate();
             this.ship2.unscheduleUpdate();
+
+            // check who got win
+            if (this.score[0] > this.score[1]) {
+                this.messageLabel.setString(stdMessage.FIRSTWIN);
+            } else {
+                this.messageLabel.setString(stdMessage.SECONDWIN);
+            }
         }
 
         // for ship 1

@@ -1,7 +1,7 @@
 var Ship1 = cc.Sprite.extend({
     ctor: function () {
         this._super();
-        this.initWithFile("res/images/ship.png");
+        this.initWithFile("res/images/ship1.png");
         // init the position and direction
         this.direction = Ship1.DIR.UP;
         this.setRotation(0);
@@ -64,7 +64,7 @@ var Ship1 = cc.Sprite.extend({
 var Ship2 = cc.Sprite.extend({
     ctor: function (number) {
         this._super();
-        this.initWithFile("res/images/ship.png");
+        this.initWithFile("res/images/ship2.png");
         // init the position and direction
         this.direction = Ship2.DIR.S;
         this.setRotation(180);
