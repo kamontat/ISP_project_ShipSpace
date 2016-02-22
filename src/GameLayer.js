@@ -1,7 +1,8 @@
-/** version 3.1 */
+/** version 3.3 */
 
 /*****************************************
 object to decrease point
+color of time when it low
 *****************************************/
 
 // index 0 is ship 1
@@ -58,12 +59,13 @@ var GameLayer = cc.LayerColor.extend({
         this.addKeyboardHandlers();
 
         // label with All score
-        this.scoreLabel = cc.LabelTTF.create(this.score[0] + " - " + this.score[1], 'Arial', 40);
+        this.scoreLabel = cc.LabelTTF.create(information.firstPlayer + " " + this.score[0] + " - " + this.score[1] + " " + information.secondPlayer, 'Arial', 40);
         this.scoreLabel.setPosition(new cc.Point(screenWidth / 2, screenHeight - 50));
         this.addChild(this.scoreLabel);
 
         // label with message
         this.messageLabel = cc.LabelTTF.create("", 'Arial', 40);
+        this.messageLabel.setColor(new cc.Color(255, 91, 33, 255))
         this.messageLabel.setPosition(new cc.Point(screenWidth - 120, screenHeight - 50));
         this.addChild(this.messageLabel);
 
@@ -120,7 +122,7 @@ var GameLayer = cc.LayerColor.extend({
             // increase speed
             this.ship1.updateSpeed();
             // change score
-            this.scoreLabel.setString((++this.score[0]) + " - " + this.score[1]);
+            this.scoreLabel.setString(information.firstPlayer + " " + (++this.score[0]) + " - " + this.score[1] + " " + information.secondPlayer);
             this.gold.randomPosition();
             this.timeGold = 5;
         }
@@ -129,7 +131,7 @@ var GameLayer = cc.LayerColor.extend({
             // increase speed
             this.ship2.updateSpeed();
             // change score
-            this.scoreLabel.setString(this.score[0] + " - " + (++this.score[1]));
+            this.scoreLabel.setString(information.firstPlayer + " " + this.score[0] + " - " + (++this.score[1]) + " " + information.secondPlayer);
             this.gold.randomPosition();
             this.timeGold = 5;
         }
