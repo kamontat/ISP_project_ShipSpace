@@ -1,4 +1,4 @@
-/** version 2.6 */
+/** version 2.8 */
 
 /*****************************************
 can enter name
@@ -24,6 +24,7 @@ var GameLayer = cc.LayerColor.extend({
         this.timeLimit = 20;
         // count time limit of Gold object
         this.timeGold = 4;
+        this.pauseTime = false;
         this.score = [0, 0];
 
         this._super(new cc.Color(39, 48, 72, 255));
@@ -48,6 +49,7 @@ var GameLayer = cc.LayerColor.extend({
         this.timeLabel = cc.LabelTTF.create(this.timeLimit, 'Arial', 40);
         this.timeLabel.setPosition(new cc.Point(50, screenHeight - 50));
         this.addChild(this.timeLabel);
+
         this.addKeyboardHandlers();
 
         // label with All score
@@ -73,7 +75,8 @@ var GameLayer = cc.LayerColor.extend({
             event: cc.EventListener.KEYBOARD,
             onKeyPressed: function (keyCode, event) {
                 self.onKeyDown(keyCode, event);
-
+                self.pauseGame(keyCode, self.pauseTime);
+                console.info("Key " + keyCode + " been press.");
             }
         }, this);
     },
@@ -126,12 +129,12 @@ var GameLayer = cc.LayerColor.extend({
             this.timeGold = 5;
         }
 
-        this.updateTime();
+        this.updateTime(this.pauseTime);
     },
 
     restartGame: function (key) {
         if (key == 32) {
-            console.log("SpaceBar been press, RESTART GAME. . .");
+            console.warn("SpaceBar been press, RESTART GAME. . .");
             globleScore[0] += this.score[0];
             globleScore[1] += this.score[1];
             globleTurn++;
@@ -140,20 +143,36 @@ var GameLayer = cc.LayerColor.extend({
         }
     },
 
-    updateTime: function () {
-        // time limit of Gold Object
-        if (this.timeGold == 0) {
-            this.gold.randomPosition();
-            this.timeGold = 4;
-        }
-        // count time limit
-        if (Date.parse(new Date()) - Date.parse(this.timeNow) == 1000) {
+    pauseGame: function (key, switchGame) {
+        if (key == 80 && switchGame == false) {
+            console.warn("Pause Button been press.");
+            this.pauseTime = true;
+            this.ship1.unscheduleUpdate();
+            this.ship2.unscheduleUpdate();
+        } else if (key == 80 && switchGame == true) {
+            console.warn("Pause Button been press.");
+            this.pauseTime = false;
             this.timeNow = new Date();
-            this.timeLimit -= 1;
-            this.timeGold--;
+            this.ship1.scheduleUpdate();
+            this.ship2.scheduleUpdate();
         }
+    },
 
-        this.timeLabel.setString(this.timeLimit);
+    updateTime: function (pause) {
+        if (pause == false) {
+            // time limit of Gold Object
+            if (this.timeGold == 0) {
+                this.gold.randomPosition();
+                this.timeGold = 4;
+            }
+            // count time limit
+            if (Date.parse(new Date()) - Date.parse(this.timeNow) == 1000) {
+                this.timeNow = new Date();
+                this.timeLimit -= 1;
+                this.timeGold--;
+            }
+            this.timeLabel.setString(this.timeLimit);
+        }
     }
 });
 
