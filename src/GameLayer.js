@@ -1,10 +1,7 @@
-/** version 2.8 */
+/** version 3.1 */
 
 /*****************************************
-can enter name
 object to decrease point
-message that important (popup)
-pause game by press "p" button
 *****************************************/
 
 // index 0 is ship 1
@@ -12,16 +9,24 @@ pause game by press "p" button
 var globleScore = [0, 0];
 var globleTurn = 0;
 
+var information = {
+    firstPlayer: "",
+    firstColor: "",
+    secondPlayer: "",
+    secondColor: "",
+    time: 0
+}
+
 var stdMessage = {
-    FIRSTWIN: "P1 WIN!",
-    SECONDWIN: "P2 WIN!"
+    FIRSTWIN: "",
+    SECONDWIN: ""
 }
 
 var GameLayer = cc.LayerColor.extend({
     init: function () {
         this.timeNow = new Date();
         // game time
-        this.timeLimit = 20;
+        this.timeLimit = information.time;
         // count time limit of Gold object
         this.timeGold = 4;
         this.pauseTime = false;
@@ -59,7 +64,7 @@ var GameLayer = cc.LayerColor.extend({
 
         // label with message
         this.messageLabel = cc.LabelTTF.create("", 'Arial', 40);
-        this.messageLabel.setPosition(new cc.Point(screenWidth - 100, screenHeight - 50));
+        this.messageLabel.setPosition(new cc.Point(screenWidth - 120, screenHeight - 50));
         this.addChild(this.messageLabel);
 
         this.scheduleUpdate();
@@ -76,7 +81,7 @@ var GameLayer = cc.LayerColor.extend({
             onKeyPressed: function (keyCode, event) {
                 self.onKeyDown(keyCode, event);
                 self.pauseGame(keyCode, self.pauseTime);
-                console.info("Key " + keyCode + " been press.");
+                //                console.info("Key " + keyCode + " been press.");
             }
         }, this);
     },
@@ -93,7 +98,7 @@ var GameLayer = cc.LayerColor.extend({
     update: function () {
         // when score Equals add more 25 second
         if (this.score[0] == this.score[1] && this.timeLimit == 0) {
-            this.timeLimit = 25;
+            this.timeLimit = Math.floor(information.time / 3);
             console.warn("Timeup BUT score equals is " + this.score[0]);
         }
         // if timeup game will stop
@@ -179,6 +184,25 @@ var GameLayer = cc.LayerColor.extend({
 var StartScene = cc.Scene.extend({
     onEnter: function () {
         this._super();
+
+        var tempName = prompt("firstName(Cannot more than 5): ", "P1");
+        while (tempName.length > 5) {
+            tempName = prompt("(again)firstName(Cannot more than 5): ", "P1");
+        }
+        information.firstPlayer = tempName;
+
+        tempName = prompt("secondName(Cannot more than 5): ", "P2");
+        while (tempName.length > 5) {
+            tempName = prompt("(again)secondName(Cannot more than 5): ", "P2");
+        }
+        information.secondPlayer = tempName;
+        stdMessage.FIRSTWIN = information.firstPlayer + " WIN!";
+        stdMessage.SECONDWIN = information.secondPlayer + " WIN!";
+
+        information.time = prompt("Time Limit(Should more than 30): ", 30)
+
+        console.info(information);
+
         var layer = new GameLayer();
         layer.init();
         this.addChild(layer);
