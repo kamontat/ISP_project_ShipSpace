@@ -121,6 +121,7 @@ var GameLayer = cc.LayerColor.extend({
         if (this.gold.closeTo(this.ship1)) {
             // increase speed
             this.ship1.updateSpeed();
+            this.ship2.updateSpeed();
             // change score
             this.scoreLabel.setString(information.firstPlayer + " " + (++this.score[0]) + " - " + this.score[1] + " " + information.secondPlayer);
             this.gold.randomPosition();
@@ -208,6 +209,6 @@ var StartScene = cc.Scene.extend({
         var layer = new GameLayer();
         layer.init();
         this.addChild(layer);
-        console.log('GameLayer created');
+        console.log("GameLayer created with " + screenHeight + " and " + screenWidth);
     }
 });

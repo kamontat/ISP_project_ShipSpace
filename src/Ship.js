@@ -5,8 +5,9 @@ var Ship1 = cc.Sprite.extend({
         // init the position and direction
         this.direction = Ship1.DIR.UP;
         this.setRotation(0);
-        // set init speed 
-        this.speed = 20;
+        // set init speed: 25000 <- find from formular FPS
+        this.speed = (screenHeight * screenWidth) / 30000;
+        console.info(this.speed);
     },
 
     update: function () {
@@ -57,7 +58,8 @@ var Ship1 = cc.Sprite.extend({
     },
 
     updateSpeed: function () {
-        this.speed -= 0.2;
+        console.info("divide by " + this.speed / 128);
+        this.speed -= (this.speed / 128);
     }
 });
 
@@ -68,8 +70,9 @@ var Ship2 = cc.Sprite.extend({
         // init the position and direction
         this.direction = Ship2.DIR.S;
         this.setRotation(180);
-        // set init speed 
-        this.speed = 20;
+        // set init speed: 25000 <- find from formular FPS
+        this.speed = (screenHeight * screenWidth) / 30000;
+        console.info(this.speed);
     },
 
     update: function () {
@@ -120,7 +123,8 @@ var Ship2 = cc.Sprite.extend({
     },
 
     updateSpeed: function () {
-        this.speed -= 0.2;
+        console.info("divide by " + this.speed / 128);
+        this.speed -= (this.speed / 100);
     }
 });
 
