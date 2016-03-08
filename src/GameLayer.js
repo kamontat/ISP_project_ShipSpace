@@ -1,8 +1,9 @@
-/** version 3.3.2 */
+/** version 3.4.1 */
 
 /*****************************************
 object to decrease point
 color of time when it low
+random bg
 show label speed
 *****************************************/
 
@@ -69,6 +70,14 @@ var GameLayer = cc.LayerColor.extend({
     this.messageLabel.setColor(new cc.Color(255, 91, 33, 255))
     this.messageLabel.setPosition(new cc.Point(screenWidth - 120, screenHeight - 50));
     this.addChild(this.messageLabel);
+
+    this.speedShip1Label = cc.LabelTTF.create(this.ship1.getSpeed(), 'Arial', 40);
+    this.speedShip1Label.setPosition(new cc.Point(100, 50));
+    this.addChild(this.speedShip1Label);
+
+    this.speedShip2Label = cc.LabelTTF.create(this.ship2.getSpeed(), 'Arial', 40);
+    this.speedShip2Label.setPosition(new cc.Point(screenWidth - 100, 50));
+    this.addChild(this.speedShip2Label);
 
     // update and input KEYBOARD
     this.scheduleUpdate();
@@ -146,9 +155,18 @@ var GameLayer = cc.LayerColor.extend({
     // change score
     if (numShip == 1) {
       this.scoreLabel.setString(information.firstPlayer + " " + (++this.score[0]) + " - " + this.score[1] + " " + information.secondPlayer);
+      this.speedShip1Label.setString(this.ship1.getSpeed());
     } else if (numShip == 2) {
       this.scoreLabel.setString(information.firstPlayer + " " + this.score[0] + " - " + (++this.score[1]) + " " + information.secondPlayer);
+      this.speedShip2Label.setString(this.ship2.getSpeed());
     }
+    if (this.score[0] >= 100) {
+      this.ship1.exportMode();
+    }
+    if (this.score[1] >= 100) {
+      this.ship2.exportMode();
+    }
+
     this.gold.randomPosition();
     this.timeGold = 5;
   },
