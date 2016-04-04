@@ -66,9 +66,9 @@ var GameLayer = cc.LayerColor.extend({
     this.addChild(this.scoreLabel);
 
     // label with message
-    this.messageLabel = cc.LabelTTF.create("", 'Arial', 40);
+    this.messageLabel = cc.LabelTTF.create("", 'Arial', 80);
     this.messageLabel.setColor(new cc.Color(255, 91, 33, 255))
-    this.messageLabel.setPosition(new cc.Point(screenWidth - 120, screenHeight - 50));
+    this.messageLabel.setPosition(new cc.Point(screenWidth / 2, screenHeight / 2));
     this.addChild(this.messageLabel);
 
     this.speedShip1Label = cc.LabelTTF.create(this.ship1.getSpeed(), 'Arial', 40);
@@ -230,6 +230,7 @@ var StartScene = cc.Scene.extend({
       tempName = prompt("(again)secondName(Cannot more than 5): ", "P2");
     }
     information.secondPlayer = tempName;
+
     stdMessage.FIRSTWIN = information.firstPlayer + " WIN!";
     stdMessage.SECONDWIN = information.secondPlayer + " WIN!";
 

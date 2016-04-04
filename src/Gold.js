@@ -5,13 +5,13 @@ var Gold = cc.Sprite.extend({
     },
 
     randomPosition: function () {
-        var randomHeight = Math.floor(Math.random() * (screenHeight - 40));
-        var randomWidth = Math.floor(Math.random() * (screenWidth - 40));
-        if (randomHeight < 0) {
-            randomHeight += 40;
+        var randomHeight = Math.floor(Math.random() * (screenHeight - 25));
+        var randomWidth = Math.floor(Math.random() * (screenWidth - 25));
+        if (randomHeight < 25) {
+            randomHeight += 25;
         }
-        if (randomWidth < 0) {
-            randomWidth += 40;
+        if (randomWidth < 25) {
+            randomWidth += 25;
         }
         this.setPosition(randomWidth, randomHeight);
 
