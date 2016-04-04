@@ -17,7 +17,8 @@ var information = {
   firstColor: "",
   secondPlayer: "",
   secondColor: "",
-  time: 0
+  // should be 40, but i test with 10s
+  time: 10
 }
 
 var stdMessage = {
@@ -233,8 +234,6 @@ var StartScene = cc.Scene.extend({
 
     stdMessage.FIRSTWIN = information.firstPlayer + " WIN!";
     stdMessage.SECONDWIN = information.secondPlayer + " WIN!";
-
-    information.time = prompt("Time Limit(Should more than 30): ", 30)
 
     console.info(information);
 
