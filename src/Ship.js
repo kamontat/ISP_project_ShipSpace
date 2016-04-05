@@ -32,8 +32,8 @@ var Ship = cc.Sprite.extend({
             this.number = player;
         },
 
-        runShip: function (number) {
-            switch (number) {
+        runShip: function () {
+            switch (this.number) {
                 case 1:
                     this.schedule(this.run1);
                     break;
@@ -45,8 +45,8 @@ var Ship = cc.Sprite.extend({
             }
         },
 
-        stopShip: function (number) {
-            switch (number) {
+        stopShip: function () {
+            switch (this.number) {
                 case 1:
                     this.unschedule(this.run1);
                     break;

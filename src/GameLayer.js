@@ -2,9 +2,10 @@
 
 /*****************************************
  object to decrease point
- color of time when it low
+ 'doing' color of time when it low
  random bg
  show label speed
+ if player said cancel in init game
  *****************************************/
 
 // index 0 is ship 1
@@ -195,14 +196,14 @@ var GameLayer = cc.LayerColor.extend({
         if (key == cc.KEY.p && !this.pauseTime) {
             console.warn("Pause.");
             this.pauseTime = true;
-            this.ship1.stopShip(1);
-            this.ship2.stopShip(2);
+            this.ship1.stopShip();
+            this.ship2.stopShip();
         } else if (key == cc.KEY.p && this.pauseTime) {
             console.warn("Unpause.");
             this.pauseTime = false;
             this.timeNow = new Date();
-            this.ship1.runShip(1);
-            this.ship2.runShip(2);
+            this.ship1.runShip();
+            this.ship2.runShip();
         }
     },
 
