@@ -1,11 +1,14 @@
 var res = {
-  ship1_png: 'res/Images/ship1.png',
-  ship2_png: 'res/Images/ship2.png',
-  CollectObject_png: 'res/Images/CollectObject.png'
+    shipRed_png: 'res/Images/shipRed.png',
+    shipBlue_png: 'res/Images/shipBlue.png',
+    shipGreen_png: 'res/Images/shipGreen.png',
+    shipPink_png: 'res/Images/shipPink.png',
+    shipYellow_png: 'res/Images/shipYellow.png',
+    CollectObject_png: 'res/Images/CollectObject.png'
 };
 
 var g_resources = [];
 
 for (var i in res) {
-  g_resources.push(res[i]);
+    g_resources.push(res[i]);
 }

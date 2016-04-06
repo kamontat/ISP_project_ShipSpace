@@ -6,18 +6,23 @@ var Ship = cc.Sprite.extend({
         /**
          * input number player (1-2)
          * @param player
+         * @param textColor
          */
-        ctor: function (player) {
+        ctor: function (player, textColor) {
             this._super();
+
+            // number ship
+            this.number = player;
+            // color ship
+            this.chooseColor(textColor);
+
             switch (player) {
                 case 1:
-                    this.initWithFile("res/images/ship1.png");
                     // init the position and direction
                     this.direction1 = Ship.KEY1.UP;
                     this.setRotation(0);
                     break;
                 case 2:
-                    this.initWithFile("res/images/ship2.png");
                     // init the position and direction
                     this.direction2 = Ship.KEY2.S;
                     this.setRotation(180);
@@ -25,11 +30,36 @@ var Ship = cc.Sprite.extend({
                 default:
                     console.error("Don't have that player yet.");
             }
-
             // set init speed: 25000 <- find from formular FPS
             this.speed = Math.ceil((screenHeight * screenWidth) / speed);
-            // number ship
-            this.number = player;
+        },
+
+        chooseColor: function (color) {
+            switch (color) {
+                case "red":
+                case "r":
+                    this.initWithFile("res/images/shipRed.png");
+                    break;
+                case "blue":
+                case "b":
+                    this.initWithFile("res/images/shipBlue.png");
+                    break;
+                case "green":
+                case "g":
+                    this.initWithFile("res/images/shipGreen.png");
+                    break;
+                case "pink":
+                case "p":
+                    this.initWithFile("res/images/shipPink.png");
+                    break;
+                case "yellow":
+                case "y":
+                    this.initWithFile("res/images/shipYellow.png");
+                    break;
+                default:
+                    console.error("Don't have " + this.color + " color");
+                    break;
+            }
         },
 
         runShip: function () {

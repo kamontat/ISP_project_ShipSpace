@@ -6,7 +6,7 @@ you can see more in [Trello](https://trello.com/b/1y9SXOec)
 ### What is this repository for? ###
 
 * project in ISP
-* Version: 3.5.3
+* Version: 3.6.1
 
 ### Who do I talk to? ###
 

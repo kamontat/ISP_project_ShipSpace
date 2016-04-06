@@ -15,18 +15,18 @@ var globleTurn = 0;
 var runTime = true;
 
 var information = {
-    firstPlayer: "",
+    firstName: "",
     firstColor: "",
-    secondPlayer: "",
+    secondName: "",
     secondColor: "",
-    // should be 40, but i test with 10s
+    // should be 40.
     time: 60
-}
+};
 
 var stdMessage = {
     FIRSTWIN: "",
     SECONDWIN: ""
-}
+};
 
 var GameLayer = cc.LayerColor.extend({
     init: function () {
@@ -43,13 +43,13 @@ var GameLayer = cc.LayerColor.extend({
         this._super(new cc.Color(39, 48, 72, 255));
         this.setPosition(new cc.Point(0, 0));
 
-        // create Ship object
-        this.ship1 = new Ship(1);
+        // create Ship1 object
+        this.ship1 = new Ship(1, information.firstColor);
         this.ship1.setPosition(new cc.Point(150, 150));
         this.addChild(this.ship1);
 
         // create Ship2 object
-        this.ship2 = new Ship(2);
+        this.ship2 = new Ship(2, information.secondColor);
         this.ship2.setPosition(new cc.Point(screenWidth - 150, screenHeight - 150));
         this.addChild(this.ship2);
 
@@ -64,7 +64,7 @@ var GameLayer = cc.LayerColor.extend({
         this.addChild(this.timeLabel);
 
         // label with All score
-        this.scoreLabel = cc.LabelTTF.create(information.firstPlayer + " " + this.score[0] + " - " + this.score[1] + " " + information.secondPlayer, 'Arial', 40);
+        this.scoreLabel = cc.LabelTTF.create(information.firstName + " " + this.score[0] + " - " + this.score[1] + " " + information.secondName, 'Arial', 40);
         this.scoreLabel.setPosition(new cc.Point(screenWidth / 2, screenHeight - 50));
         this.addChild(this.scoreLabel);
 
@@ -74,10 +74,12 @@ var GameLayer = cc.LayerColor.extend({
         this.messageLabel.setPosition(new cc.Point(screenWidth / 2, screenHeight / 2));
         this.addChild(this.messageLabel);
 
+        // label with speed of ship 1
         this.speedShip1Label = cc.LabelTTF.create(this.ship1.getSpeed(), 'Arial', 40);
         this.speedShip1Label.setPosition(new cc.Point(100, 50));
         this.addChild(this.speedShip1Label);
 
+        // label with speed of ship 2
         this.speedShip2Label = cc.LabelTTF.create(this.ship2.getSpeed(), 'Arial', 40);
         this.speedShip2Label.setPosition(new cc.Point(screenWidth - 100, 50));
         this.addChild(this.speedShip2Label);
@@ -98,14 +100,14 @@ var GameLayer = cc.LayerColor.extend({
             event: cc.EventListener.KEYBOARD,
             onKeyPressed: function (keyCode, event) {
                 if (!self.pauseTime) {
-                    self.onKeyDown(keyCode, event);
+                    self.onKeyDown(keyCode);
                 }
                 self.pauseGame(keyCode);
             }
         }, this);
     },
 
-    onKeyDown: function (keyCode, event) {
+    onKeyDown: function (keyCode) {
         if (this.timeLimit > 0) {
             this.ship1.switchDirection(keyCode);
             this.ship2.switchDirection(keyCode);
@@ -165,7 +167,7 @@ var GameLayer = cc.LayerColor.extend({
         }
 
         // update label of score and speed
-        this.scoreLabel.setString(information.firstPlayer + " " + this.score[0] + " - " + this.score[1] + " " + information.secondPlayer);
+        this.scoreLabel.setString(information.firstName + " " + this.score[0] + " - " + this.score[1] + " " + information.secondName);
         this.speedShip1Label.setString(this.ship1.getSpeed());
         this.speedShip2Label.setString(this.ship2.getSpeed());
 
@@ -230,20 +232,14 @@ var StartScene = cc.Scene.extend({
         this._super();
 
         if (runTime) {
-            var tempName = prompt("firstName(Cannot more than 5): ", "P1");
-            while (tempName.length > 5) {
-                tempName = prompt("(again)firstName(Cannot more than 5): ", "P1");
-            }
-            information.firstPlayer = tempName;
+            // intro game.
+            alert("This game is must play with 2 player, challenge with other.\nYou have to enter your name and other name with color.\nNow we have 5 color \n1) Red \n2) Blue \n3) Green \n4) Pink \n5) Yellow");
 
-            tempName = prompt("secondName(Cannot more than 5): ", "P2");
-            while (tempName.length > 5) {
-                tempName = prompt("(again)secondName(Cannot more than 5): ", "P2");
-            }
-            information.secondPlayer = tempName;
+            this.input(1);
+            this.input(2);
 
-            stdMessage.FIRSTWIN = information.firstPlayer + " WIN!";
-            stdMessage.SECONDWIN = information.secondPlayer + " WIN!";
+            stdMessage.FIRSTWIN = information.firstName + " in color: " + information.firstColor + " WIN!";
+            stdMessage.SECONDWIN = information.secondName + " in color: " + information.secondColor + " WIN!";
             // run only 1 time
             runTime = false;
         }
@@ -254,5 +250,90 @@ var StartScene = cc.Scene.extend({
         layer.init();
         this.addChild(layer);
         console.log("GameLayer created with " + screenHeight + " and " + screenWidth);
+    },
+
+    /**
+     * this function will get input from user and check correct name and color
+     * @param numberPlayer
+     * @returns {number} 0 is mean <b>true</b> <br>1 is mean error in <b>name</b> <br>  2 is mean error in <b>color</b> <br> -99 is mean error in <b>number player</b>
+     */
+    input: function (numberPlayer) {
+        var temp = "";
+        if (numberPlayer == 1) {
+            temp = prompt("first name(< 5),color: ", "P1,red");
+        } else if (numberPlayer == 2) {
+            temp = prompt("second name(< 5),color: ", "P2,blue");
+        } else {
+            return -99;
+            console.error("Don't have that player yet.");
+        }
+
+        // check input form
+        if (temp.indexOf(",") == -1) {
+            console.error("input fail. END GAME.");
+            return 1;
+        }
+
+        // split string to arrays
+        var arrays = temp.split(",");
+
+        // check length
+        arrays[0] = this.checkLength(arrays[0], 5);
+
+        // check color
+        if (!this.checkColor(arrays[1])) {
+            return 2;
+        }
+
+        // add to information of te game
+        if (numberPlayer == 1) {
+            information.firstName = arrays[0];
+            information.firstColor = arrays[1];
+        } else if (numberPlayer == 2) {
+            information.secondName = arrays[0];
+            information.secondColor = arrays[1];
+        }
+
+        // if everything is right ways
+        return 0;
+    },
+
+    /**
+     *  check text length with the length
+     * @param text check this text
+     * @param length use this length to check
+     * @returns {string} if length is not fit input again by prompt and return the correct thing
+     */
+    checkLength: function (text, length) {
+        var name = "";
+        while (text.length > length) {
+            name = prompt(text + " is too long name (Can't more than 5 alphabet), \nChange to . . .");
+        }
+        return name;
+    },
+
+    /**
+     * check color with the ship color in stock
+     * @param color check this color
+     * @returns {boolean} return <code>true</code> if it have; otherwise, return <code>false</code>
+     */
+    checkColor: function (color) {
+        switch (color) {
+            case "red":
+            case "r":
+            case "blue":
+            case "b":
+            case "green":
+            case "g":
+            case "pink":
+            case "p":
+            case "yellow":
+            case "y":
+                return true;
+                break;
+            default:
+                return false;
+                break;
+        }
     }
 });
