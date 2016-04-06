@@ -1,11 +1,12 @@
 /** version 3.4.1 */
 
 /*****************************************
- object to decrease point
- 'doing' color of time when it low
- random bg
- show label speed
- if player said cancel in init game
+ *** add document
+ * object to decrease point
+ ** 'done' color of time when it low (2 hr 55 mins)
+ ** random bg
+ * if player said cancel in init game
+ * single player (hint: input function in StartScene)
  *****************************************/
 
 // index 0 is ship 1
@@ -20,7 +21,7 @@ var information = {
     secondName: "",
     secondColor: "",
     // should be 40.
-    time: 60
+    time: 15
 };
 
 var stdMessage = {
@@ -103,6 +104,15 @@ var GameLayer = cc.LayerColor.extend({
                     self.onKeyDown(keyCode);
                 }
                 self.pauseGame(keyCode);
+
+                //debug
+                if (keyCode == cc.KEY.s) {
+                    console.log("time: " + self.timeLimit);
+                    console.log("score: " + self.score);
+                    console.log("position ship1: " + self.ship1.getPosition().x.toFixed(2) + " , " + self.ship1.getPosition().y.toFixed(2));
+                    console.log("position ship2: " + self.ship2.getPosition().x.toFixed(2) + " , " + self.ship2.getPosition().y.toFixed(2));
+                    console.log(information);
+                }
             }
         }, this);
     },
@@ -233,13 +243,17 @@ var StartScene = cc.Scene.extend({
 
         if (runTime) {
             // intro game.
-            alert("This game is must play with 2 player, challenge with other.\nYou have to enter your name and other name with color.\nNow we have 5 color \n1) Red \n2) Blue \n3) Green \n4) Pink \n5) Yellow");
+            alert("This game is must play with 2 player, challenge with other.\nYou have to enter your name and other name with color.\nNow we have 5 color \n1) (R)ed \n2) (B)lue \n3) (G)reen \n4) (P)ink \n5) (Y)ellow");
 
-            this.input(1);
-            this.input(2);
+            // player 1
+            this.doErrorCode(1, this.input(1));
+            // player 2
+            this.doErrorCode(2, this.input(2));
 
-            stdMessage.FIRSTWIN = information.firstName + " in color: " + information.firstColor + " WIN!";
-            stdMessage.SECONDWIN = information.secondName + " in color: " + information.secondColor + " WIN!";
+            this.changeColorInformation();
+            stdMessage.FIRSTWIN = information.firstName + "(" + information.firstColor + ")" + " WIN!";
+            stdMessage.SECONDWIN = information.secondName + "(" + information.secondColor + ")" + " WIN!";
+
             // run only 1 time
             runTime = false;
         }
@@ -253,9 +267,50 @@ var StartScene = cc.Scene.extend({
     },
 
     /**
+     * change error code from input to find the way fix it.
+     * @param player numPlayer got error
+     * @param code Error code
+     */
+    doErrorCode: function (player, code) {
+        // form error
+        if (code == 1) {
+            this.doErrorCode(player, this.input(player));
+        }
+        // color not found
+        if (code == 2) {
+            var color = prompt("your color isn't have now, please change to vaild color. \nNow we have 5 color \n1) (R)ed \n2) (B)lue \n3) (G)reen \n4) (P)ink \n5) (Y)ellow");
+
+            // wrong again
+            if (this.checkColor(color)) {
+                // right color
+                if (player == 1) {
+                    information.firstColor = color.toLowerCase();
+                } else if (player == 2) {
+                    information.secondColor = color.toLowerCase();
+                }
+            } else {
+                this.doErrorCode(player, 2);
+            }
+        }
+        // number player
+        if (code == -99) {
+            // error because programmer
+            while (true) {
+                console.error("Code: -99.");
+            }
+        }
+
+        // log complete information
+        if (code == 0) {
+            console.info(information);
+        }
+
+    },
+
+    /**
      * this function will get input from user and check correct name and color
      * @param numberPlayer
-     * @returns {number} 0 is mean <b>true</b> <br>1 is mean error in <b>name</b> <br>  2 is mean error in <b>color</b> <br> -99 is mean error in <b>number player</b>
+     * @returns {number} 0 is mean <b>true</b> <br>1 is mean error in <b>form</b> <br>  2 is mean error in <b>color</b> <br> -99 is mean error in <b>number player</b>
      */
     input: function (numberPlayer) {
         var temp = "";
@@ -265,12 +320,15 @@ var StartScene = cc.Scene.extend({
             temp = prompt("second name(< 5),color: ", "P2,blue");
         } else {
             return -99;
-            console.error("Don't have that player yet.");
         }
+
+        //---------------------------------------------------------
+        // if length of temp is 0 Mean 1 player
+        //---------------------------------------------------------
 
         // check input form
         if (temp.indexOf(",") == -1) {
-            console.error("input fail. END GAME.");
+            console.error("input fail. Try again");
             return 1;
         }
 
@@ -280,6 +338,13 @@ var StartScene = cc.Scene.extend({
         // check length
         arrays[0] = this.checkLength(arrays[0], 5);
 
+        // assign name
+        if (numberPlayer == 1) {
+            information.firstName = arrays[0].toLowerCase();
+        } else if (numberPlayer == 2) {
+            information.secondName = arrays[0].toLowerCase();
+        }
+
         // check color
         if (!this.checkColor(arrays[1])) {
             return 2;
@@ -287,15 +352,57 @@ var StartScene = cc.Scene.extend({
 
         // add to information of te game
         if (numberPlayer == 1) {
-            information.firstName = arrays[0];
-            information.firstColor = arrays[1];
+            information.firstColor = arrays[1].toLowerCase();
         } else if (numberPlayer == 2) {
-            information.secondName = arrays[0];
-            information.secondColor = arrays[1];
+            information.secondColor = arrays[1].toLowerCase();
         }
 
         // if everything is right ways
         return 0;
+    },
+
+    /**
+     * if player input shortcut of color
+     * this function will replace in by full name of color
+     */
+    changeColorInformation: function () {
+        var color = information.firstColor;
+        switch (color) {
+            case "r":
+                information.firstColor = "red";
+                break;
+            case "b":
+                information.firstColor = "blue";
+                break;
+            case "g":
+                information.firstColor = "green";
+                break;
+            case "p":
+                information.firstColor = "pink";
+                break;
+            case "y":
+                information.firstColor = "yellow";
+                break;
+        }
+
+        color = information.secondColor;
+        switch (color) {
+            case "r":
+                information.secondColor = "red";
+                break;
+            case "b":
+                information.secondColor = "blue";
+                break;
+            case "g":
+                information.secondColor = "green";
+                break;
+            case "p":
+                information.secondColor = "pink";
+                break;
+            case "y":
+                information.secondColor = "yellow";
+                break;
+        }
     },
 
     /**
@@ -305,11 +412,10 @@ var StartScene = cc.Scene.extend({
      * @returns {string} if length is not fit input again by prompt and return the correct thing
      */
     checkLength: function (text, length) {
-        var name = "";
         while (text.length > length) {
-            name = prompt(text + " is too long name (Can't more than 5 alphabet), \nChange to . . .");
+            text = prompt(text + " is too long name (Can't more than 5 alphabet), \nChange to . . .");
         }
-        return name;
+        return text;
     },
 
     /**
@@ -318,7 +424,7 @@ var StartScene = cc.Scene.extend({
      * @returns {boolean} return <code>true</code> if it have; otherwise, return <code>false</code>
      */
     checkColor: function (color) {
-        switch (color) {
+        switch (color.toLowerCase()) {
             case "red":
             case "r":
             case "blue":
@@ -332,6 +438,7 @@ var StartScene = cc.Scene.extend({
                 return true;
                 break;
             default:
+                console.error("don't have " + color + " color");
                 return false;
                 break;
         }

@@ -57,7 +57,7 @@ var Ship = cc.Sprite.extend({
                     this.initWithFile("res/images/shipYellow.png");
                     break;
                 default:
-                    console.error("Don't have " + this.color + " color");
+                    console.error("Don't have this color");
                     break;
             }
         },
