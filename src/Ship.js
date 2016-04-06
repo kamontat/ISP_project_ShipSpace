@@ -1,3 +1,5 @@
+/** version 3.6.4 */
+
 const speed = 30000;
 const decreaseSpeed = 100;
 const numberPlayer = 2;

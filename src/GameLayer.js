@@ -1,11 +1,9 @@
-/** version 3.4.1 */
+/** version 3.6.4 */
 
 /*****************************************
  *** add document
  * object to decrease point
- ** 'done' color of time when it low (2 hr 55 mins)
  ** random bg
- * if player said cancel in init game
  * single player (hint: input function in StartScene)
  *****************************************/
 

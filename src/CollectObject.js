@@ -1,3 +1,5 @@
+/** version 3.6.4 */
+
 var CollectObject = cc.Sprite.extend({
     ctor: function () {
         this._super();
