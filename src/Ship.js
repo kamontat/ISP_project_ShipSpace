@@ -1,6 +1,7 @@
 /** version 3.6.4 */
 
-const speed = 30000;
+// should more than 10, less than 25
+const speed = 15;
 const decreaseSpeed = 100;
 const numberPlayer = 2;
 
@@ -32,8 +33,8 @@ var Ship = cc.Sprite.extend({
                 default:
                     console.error("Don't have that player yet.");
             }
-            // set init speed: 25000 <- find from formular FPS
-            this.speed = Math.ceil((screenHeight * screenWidth) / speed);
+            // set init speed
+            this.speed = speed;
         },
 
         chooseColor: function (color) {
@@ -240,7 +241,7 @@ var Ship = cc.Sprite.extend({
         // called want player have 100 score
         expertMode: function () {
             console.info("Expert Mode: ON")
-            this.speed = (screenHeight * screenWidth) / (speed / 2);
+            this.speed = ((speed * 2) / 3);
         }
 
     })
