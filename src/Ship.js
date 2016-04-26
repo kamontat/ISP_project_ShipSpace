@@ -238,12 +238,14 @@ var Ship = cc.Sprite.extend({
             return this.number;
         },
 
-        // called want player have 100 score
-        expertMode: function () {
-            console.info("Expert Mode: ON")
-            this.speed = ((speed * 2) / 3);
+        // called want player have 50 score
+        expertMode: function (point) {
+            if (point == 50) {
+                console.info("Expert Mode: ON")
+                this.speed = ((speed * 3) / 2);
+                console.log(this.speed)
+            }
         }
-
     })
     ;
 

@@ -19,7 +19,7 @@ var information = {
     secondName: "",
     secondColor: "",
     // should be 40.
-    time: 15
+    time: 100
 };
 
 var stdMessage = {
@@ -104,7 +104,7 @@ var GameLayer = cc.LayerColor.extend({
                 self.pauseGame(keyCode);
 
                 //debug
-                if (keyCode == cc.KEY.s) {
+                if (keyCode == cc.KEY.q) {
                     console.log("time: " + self.timeLimit);
                     console.log("score: " + self.score);
                     console.log("position ship1: " + self.ship1.getPosition().x.toFixed(2) + " , " + self.ship1.getPosition().y.toFixed(2));
@@ -154,14 +154,6 @@ var GameLayer = cc.LayerColor.extend({
         this.ship2.stopShip(2);
     },
 
-    checkWin: function () {
-        if (this.score[0] > this.score[1]) {
-            this.messageLabel.setString(stdMessage.FIRSTWIN);
-        } else {
-            this.messageLabel.setString(stdMessage.SECONDWIN);
-        }
-    },
-
     shipHitCO: function (number) {
         // change score
         if (number == 1) {
@@ -180,15 +172,19 @@ var GameLayer = cc.LayerColor.extend({
         this.speedShip2Label.setString(this.ship2.getSpeed());
 
         // turn on expert mode
-        if (this.score[0] >= 100) {
-            this.ship1.expertMode();
-        }
-        if (this.score[1] >= 100) {
-            this.ship2.expertMode();
-        }
+        this.ship1.expertMode(this.score[0]);
+        this.ship2.expertMode(this.score[1]);
 
         this.collectObject.randomPosition();
         this.timeGold = 5;
+    },
+
+    checkWin: function () {
+        if (this.score[0] > this.score[1]) {
+            this.messageLabel.setString(stdMessage.FIRSTWIN);
+        } else {
+            this.messageLabel.setString(stdMessage.SECONDWIN);
+        }
     },
 
     restartGame: function (key) {
