@@ -67,7 +67,7 @@ var GameLayer = cc.LayerColor.extend({
 
         // label with message
         this.messageLabel = cc.LabelTTF.create("", 'Arial', 80);
-        this.messageLabel.setColor(new cc.Color(255, 91, 33, 255))
+        this.messageLabel.setColor(new cc.Color(255, 91, 33, 255));
         this.messageLabel.setPosition(new cc.Point(screenWidth / 2, screenHeight / 2));
         this.addChild(this.messageLabel);
 

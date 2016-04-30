@@ -50,4 +50,4 @@ CollectObject.SIZE = {
     Y: 40,
     HALFX: 20,
     HALFY: 20
-}
+};

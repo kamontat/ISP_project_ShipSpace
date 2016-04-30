@@ -276,11 +276,11 @@ Ship.KEY1 = {
     RIGHT: 39,
     DOWN: 40
 
-}
+};
 
 Ship.KEY2 = {
     A: 65,
     W: 87,
     D: 68,
     S: 83
-}
+};
