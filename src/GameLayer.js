@@ -108,7 +108,10 @@ var GameLayer = cc.LayerColor.extend({
                     console.log("time: " + self.timeLimit);
                     console.log("score: " + self.score);
                     console.log("position ship1: " + self.ship1.getPosition().x.toFixed(2) + " , " + self.ship1.getPosition().y.toFixed(2));
+                    console.log("speed: " + self.ship1.speed);
+
                     console.log("position ship2: " + self.ship2.getPosition().x.toFixed(2) + " , " + self.ship2.getPosition().y.toFixed(2));
+                    console.log("speed: " + self.ship2.speed);
                     console.log(information);
                 }
             }
@@ -292,11 +295,6 @@ var StartScene = cc.Scene.extend({
             while (true) {
                 console.error("Code: -99.");
             }
-        }
-
-        // log complete information
-        if (code == 0) {
-            console.info(information);
         }
 
     },
