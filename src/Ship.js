@@ -1,4 +1,4 @@
-/** version 4.0.1 */
+/** version 4.0.2 */
 
 // should more than 10, less than 25
 const speed = 15;
@@ -61,8 +61,9 @@ var Ship = cc.Sprite.extend({
                 break;
             case "black":
                 this.initWithFile("res/images/shipBlack.png");
+                break;
             default:
-                console.error("Don't have this color");
+                console.error("Don't have " + color + " color");
                 break;
         }
     },
@@ -175,17 +176,21 @@ var Ship = cc.Sprite.extend({
         if (!(Math.abs(myPos.x - goldPos.x) <= CollectObject.SIZE.X + 5)) {
             if (Math.round(goldPos.x) < Math.round(myPos.x)) {
                 this.switchDirection(Ship.KEY2.A);
+                this.switchDirection(Ship.KEY1.LEFT);
             }
             else if (Math.round(goldPos.x) > Math.round(myPos.x)) {
                 this.switchDirection(Ship.KEY2.D);
+                this.switchDirection(Ship.KEY1.RIGHT);
             }
         }
         // change util correct dir
         if (!(Math.abs(myPos.y - goldPos.y) <= CollectObject.SIZE.Y + 5)) {
             if (Math.round(goldPos.y) < Math.round(myPos.y)) {
                 this.switchDirection(Ship.KEY2.S);
+                this.switchDirection(Ship.KEY1.DOWN);
             } else if (Math.round(goldPos.y) > Math.round(myPos.y)) {
                 this.switchDirection(Ship.KEY2.W);
+                this.switchDirection(Ship.KEY1.UP);
             }
         }
 

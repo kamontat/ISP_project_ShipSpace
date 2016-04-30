@@ -1,10 +1,7 @@
-/** version 4.0.1 */
+/** version 4.0.2 */
 
 /*****************************************
  *** add document
- * object to decrease point
- ** random bg
- * single player (hint: input function in StartScene)
  *****************************************/
 
 // index 0 is ship 1
@@ -14,9 +11,9 @@ var globleTurn = 0;
 var runTime = true;
 
 var information = {
-    firstName: "",
-    firstColor: "",
-    secondName: "Com",
+    firstName: "Com1",
+    firstColor: "black",
+    secondName: "Com2",
     secondColor: "black",
     singleMode: true,
     // should be 40.
@@ -97,6 +94,12 @@ var GameLayer = cc.LayerColor.extend({
             this.ship2.speed = speed / 2;
         }
 
+        // secret code
+        if (information.singleMode == "fuck") {
+            this.ship1.speed = speed * 3;
+            this.ship2.speed = speed * 3;
+        }
+
         return true;
     },
 
@@ -136,6 +139,11 @@ var GameLayer = cc.LayerColor.extend({
 
     update: function () {
         if (information.singleMode) {
+            this.ship2.autoDir(this.collectObject);
+        }
+        // secret code
+        if (information.singleMode == "fuck") {
+            this.ship1.autoDir(this.collectObject);
             this.ship2.autoDir(this.collectObject);
         }
 
@@ -249,13 +257,19 @@ var StartScene = cc.Scene.extend({
             // intro game.
             alert("This game is must play with 2 player, challenge with other.\nYou have to enter your name and other name with color.\nNow we have 5 color \n1) (R)ed \n2) (B)lue \n3) (G)reen \n4) (P)ink \n5) (Y)ellow");
 
-            information.singleMode = prompt("Did you want to play Single Mode (yes, no)?") == "yes";
+            var answer = prompt("Did you want to play Single Mode (yes, no)?");
 
-            // player 1
-            this.doErrorCode(1, this.input(1));
-            if (!information.singleMode) {
-                // player 2
-                this.doErrorCode(2, this.input(2));
+            information.singleMode = answer == "yes" || answer == "Yes" || answer == "y" || answer == "Y";
+            // secret code
+            if (answer == "fuck") {
+                information.singleMode = "fuck";
+            } else {
+                // player 1
+                this.doErrorCode(1, this.input(1));
+                if (!information.singleMode) {
+                    // player 2
+                    this.doErrorCode(2, this.input(2));
+                }
             }
 
             this.changeColorInformation();
