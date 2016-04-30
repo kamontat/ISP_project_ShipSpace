@@ -16,8 +16,9 @@ var runTime = true;
 var information = {
     firstName: "",
     firstColor: "",
-    secondName: "",
-    secondColor: "",
+    secondName: "Com",
+    secondColor: "black",
+    singleMode: true,
     // should be 40.
     time: 100
 };
@@ -128,6 +129,10 @@ var GameLayer = cc.LayerColor.extend({
     },
 
     update: function () {
+        if (information.singleMode) {
+            this.ship2.autoDir(this.collectObject);
+        }
+
         // when score Equals add more 1 / 3 of all time
         if (this.score[0] == this.score[1] && this.timeLimit == 0) {
             this.timeLimit = Math.floor(information.time / 3);
@@ -173,10 +178,6 @@ var GameLayer = cc.LayerColor.extend({
         this.scoreLabel.setString(information.firstName + " " + this.score[0] + " - " + this.score[1] + " " + information.secondName);
         this.speedShip1Label.setString(this.ship1.getSpeed());
         this.speedShip2Label.setString(this.ship2.getSpeed());
-
-        // turn on expert mode
-        this.ship1.expertMode(this.score[0]);
-        this.ship2.expertMode(this.score[1]);
 
         this.collectObject.randomPosition();
         this.timeGold = 5;
@@ -242,10 +243,14 @@ var StartScene = cc.Scene.extend({
             // intro game.
             alert("This game is must play with 2 player, challenge with other.\nYou have to enter your name and other name with color.\nNow we have 5 color \n1) (R)ed \n2) (B)lue \n3) (G)reen \n4) (P)ink \n5) (Y)ellow");
 
+            information.singleMode = prompt("Did you want to play Single Mode (yes, no)?") == "yes" ? true : false;
+
             // player 1
             this.doErrorCode(1, this.input(1));
-            // player 2
-            this.doErrorCode(2, this.input(2));
+            if (!information.singleMode) {
+                // player 2
+                this.doErrorCode(2, this.input(2));
+            }
 
             this.changeColorInformation();
             stdMessage.FIRSTWIN = information.firstName + "(" + information.firstColor + ")" + " WIN!";
