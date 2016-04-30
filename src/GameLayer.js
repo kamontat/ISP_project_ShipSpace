@@ -17,7 +17,7 @@ var information = {
     secondColor: "black",
     singleMode: true,
     // should be 40.
-    time: 100
+    time: 40
 };
 
 var stdMessage = {
@@ -314,14 +314,6 @@ var StartScene = cc.Scene.extend({
                 this.doErrorCode(player, 2);
             }
         }
-        // number player
-        if (code == -99) {
-            // error because programmer
-            while (true) {
-                console.error("Code: -99.");
-            }
-        }
-
     },
 
     /**
