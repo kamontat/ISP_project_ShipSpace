@@ -91,6 +91,12 @@ var GameLayer = cc.LayerColor.extend({
 
         this.addKeyboardHandlers();
 
+        // balance of speed
+        if (information.singleMode) {
+            this.ship1.speed = speed / 2;
+            this.ship2.speed = speed / 2;
+        }
+
         return true;
     },
 
@@ -243,7 +249,7 @@ var StartScene = cc.Scene.extend({
             // intro game.
             alert("This game is must play with 2 player, challenge with other.\nYou have to enter your name and other name with color.\nNow we have 5 color \n1) (R)ed \n2) (B)lue \n3) (G)reen \n4) (P)ink \n5) (Y)ellow");
 
-            information.singleMode = prompt("Did you want to play Single Mode (yes, no)?") == "yes" ? true : false;
+            information.singleMode = prompt("Did you want to play Single Mode (yes, no)?") == "yes";
 
             // player 1
             this.doErrorCode(1, this.input(1));
@@ -432,6 +438,7 @@ var StartScene = cc.Scene.extend({
             case "p":
             case "yellow":
             case "y":
+            case "black":
                 return true;
                 break;
             default:

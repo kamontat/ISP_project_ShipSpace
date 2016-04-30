@@ -2,7 +2,7 @@
 
 // should more than 10, less than 25
 const speed = 15;
-const decreaseSpeed = 100;
+const decreaseSpeed = 50;
 const numberPlayer = 2;
 
 var Ship = cc.Sprite.extend({
