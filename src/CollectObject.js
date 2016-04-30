@@ -1,4 +1,4 @@
-/** version 3.6.4 */
+/** version 4.0.1 */
 
 var CollectObject = cc.Sprite.extend({
     ctor: function () {
