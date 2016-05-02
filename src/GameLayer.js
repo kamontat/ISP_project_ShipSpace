@@ -4,10 +4,9 @@
  *** add document
  *****************************************/
 
-// index 0 is ship 1
-// index 1 is ship 2
-var globleScore = [0, 0];
-var globleTurn = 0;
+// [first player[turn Win, All score], second player[turn Win, All score]]
+var globalScore = [[0, 0], [0, 0]];
+var globalTurn = 0;
 var runTime = true;
 
 var information = {
@@ -70,6 +69,13 @@ var GameLayer = cc.LayerColor.extend({
         this.messageLabel.setColor(new cc.Color(255, 91, 33, 255));
         this.messageLabel.setPosition(new cc.Point(screenWidth / 2, screenHeight / 2));
         this.addChild(this.messageLabel);
+
+        this.helpLabel = cc.LabelTTF.create("Player 1: Use arrow key to Move \n" +
+            "Player 2: Use 'a' 's' 'd' 'w' key to Move \n" +
+            "Press 'p' to stop game. \n" +
+            "Press 'space-bar' to restart game.", 'Arial', 15);
+        this.helpLabel.setPosition(new cc.Point(screenWidth / 2, 50));
+        this.addChild(this.helpLabel);
 
         // label with speed of ship 1
         this.speedShip1Label = cc.LabelTTF.create(this.ship1.getSpeed(), 'Arial', 40);
@@ -150,9 +156,8 @@ var GameLayer = cc.LayerColor.extend({
         // when score Equals add more 1 / 3 of all time
         if (this.score[0] == this.score[1] && this.timeLimit == 0) {
             this.timeLimit = Math.floor(information.time / 3);
-            console.warn("Timeup BUT score equals is " + this.score[0]);
         }
-        // if timeup game will stop
+        // if time up game will stop
         if (this.timeLimit <= 0) {
             this.stopUpdate();
             this.checkWin();
@@ -200,19 +205,26 @@ var GameLayer = cc.LayerColor.extend({
     checkWin: function () {
         if (this.score[0] > this.score[1]) {
             this.messageLabel.setString(stdMessage.FIRSTWIN);
+            globalScore[0][0]++;
         } else {
             this.messageLabel.setString(stdMessage.SECONDWIN);
+            globalScore[1][0]++;
         }
     },
 
     restartGame: function (key) {
+
         if (key == cc.KEY.space) {
             console.warn("SpaceBar been press, RESTART GAME. . .");
-            globleScore[0] += this.score[0];
-            globleScore[1] += this.score[1];
-            globleTurn++;
-            console.info(globleTurn + " turn(s) :: SCORE NOW: " + globleScore[0] + " - " + globleScore[1]);
+            globalScore[0][1] += this.score[0];
+            globalScore[1][1] += this.score[1];
+            globalTurn++;
+            console.info(globalTurn + " turn(s)");
+            console.info("player1 win: " + globalScore[0][0] + " turn, player2 win: " + globalScore[1][0] + " turn");
+            console.info("total score: " + globalScore[0][1] + " - " + globalScore[1][1]);
+
             cc.director.runScene(new StartScene());
+
         }
     },
 
@@ -257,7 +269,7 @@ var StartScene = cc.Scene.extend({
             // intro game.
             alert("This game is must play with 2 player, challenge with other.\nYou have to enter your name and other name with color.\nNow we have 5 color \n1) (R)ed \n2) (B)lue \n3) (G)reen \n4) (P)ink \n5) (Y)ellow");
 
-            var answer = prompt("Did you want to play Single Mode (yes, no)?");
+            var answer = prompt("Did you want to play Single Mode (yes, no)?", "yes");
 
             information.singleMode = answer == "yes" || answer == "Yes" || answer == "y" || answer == "Y";
             // secret code
