@@ -1,4 +1,4 @@
-/** version 4.0.2 */
+/** version 4.1.0 */
 
 // should more than 10, less than 25
 const speed = 15;

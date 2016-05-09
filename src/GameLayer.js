@@ -1,8 +1,4 @@
-/** version 4.0.2 */
-
-/*****************************************
- *** add document
- *****************************************/
+/** version 4.1.0 */
 
 // [first player[turn Win, All score], second player[turn Win, All score]]
 var globalScore = [[0, 0], [0, 0]];
